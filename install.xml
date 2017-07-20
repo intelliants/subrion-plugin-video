@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<module type="plugin" name="video">
+    <title>Video</title>
+    <summary>Allows to create video-section on the website</summary>
+    <author>Intelliants LLC</author>
+    <contributor>Intelliants LLC</contributor>
+    <version>4.1.0</version>
+    <date>2017-05-02</date>
+    <compatibility>4.1</compatibility>
+
+    <items>
+        <item payable="0">video</item>
+    </items>
+
+    <actions>
+        <action name="videos" url="video/" icon="list" pages="video:add,video:edit"><![CDATA[]]></action>
+        <action name="add_video" url="video/add/" icon="plus" pages="video:read,video:edit"><![CDATA[]]></action>
+    </actions>
+
+    <adminpages>
+        <page group="content" name="video" url="video/" menus="menu">Video</page>
+    </adminpages>
+
+    <pages>
+        <page menus="main,bottom" name="video" url="video/">Video</page>
+    </pages>
+
+    <fields_groups>
+        <group item="video" name="general" title="General"><![CDATA[]]></group>
+    </fields_groups>
+
+    <fields>
+        <field name="title" item="video" type="text" group="general" length="70" required="1" multilingual="1">Title</field>
+        <field name="preview" item="video" type="image" group="general" thumb_width="300" thumb_height="300" width="800" height="600" prefix="video_" adminonly="1">Preview</field>
+        <field name="source" item="video" type="radio" group="general" values="youtube||Youtube,vimeo||Vimeo,custom_upload||Custom Upload" default="youtube" required="1" adminonly="1" relation="parent">Source</field>
+        <field name="url" item="video" type="text" group="general" length="70" required="1" relation="dependent" parent="source:youtube,vimeo" adminonly="1">Video Link</field>
+        <field name="file_mp4" item="video" type="storage" group="general" length="1" required="1" relation="dependent" parent="source:custom_upload" adminonly="1" file_types="mp4">MP4</field>
+        <field name="file_webm" item="video" type="storage" group="general" length="1" relation="dependent" parent="source:custom_upload" adminonly="1" file_types="webm">WebM</field>
+        <field name="file_ogg" item="video" type="storage" group="general" length="1" relation="dependent" parent="source:custom_upload" adminonly="1" file_types="ogg">Ogg</field>
+    </fields>
+
+    <phrases>
+        <phrase category="admin" key="dashboard_video_add">Add Video</phrase>
+
+        <phrase category="admin" key="add_video">Add Video</phrase>
+        <phrase category="admin" key="edit_video">Edit Video</phrase>
+        <phrase category="admin" key="video_added">Entry added.</phrase>
+
+        <phrase category="common" key="video">Video</phrase>
+
+        <phrase category="frontend" key="no_videos">Administrator has not posted any videos.</phrase>
+        <phrase category="frontend" key="posted">Posted</phrase>
+        <phrase category="frontend" key="view_all_videos">View all videos</phrase>
+    </phrases>
+
+    <configgroup name="video">Video</configgroup>
+
+    <config group="video" name="video_plugin" type="divider" value="General">General</config>
+    <config group="video" name="video_number_block" type="text" description="Number of displayed videos in Latest Videos block">2</config>
+    <config group="video" name="video_number" type="text" description="Number of displayed videos per page">12</config>
+    <config group="video" name="video_width" type="text" description="Width of a video player">100%</config>
+    <config group="video" name="video_height" type="text" description="Height of a video player">400px</config>
+    <config group="video" name="video_display_preview" type="radio" values="1,0" description="Display previews">1</config>
+    <config group="video" name="video_autoplay" type="radio" values="1,0" description="Autoplay videos">0</config>
+
+    <blocks>
+        <block title="Latest Videos" name="latest_videos" collapsible="1" position="left" type="smarty" classname="" filename="block.latest_videos"><![CDATA[]]></block>
+    </blocks>
+
+    <hooks>
+        <hook name="phpCoreBeforePageDisplay" page_type="front" filename="hook.blocks-load"><![CDATA[]]></hook>
+        <hook name="adminDashboardStatistics" page_type="admin"><![CDATA[$items['video'] = 'plugin';]]></hook>
+    </hooks>
+
+    <install>
+        <sql>
+            <![CDATA[
+CREATE TABLE `{prefix}video` (
+    `id` mediumint(7) unsigned NOT NULL auto_increment,
+    `member_id` int(11) unsigned NOT NULL,
+    `date_added` datetime,
+    `date_modified` datetime,
+    `status` enum('inactive', 'active') NOT NULL default 'active',
+    `views_num` mediumint(7) unsigned NOT NULL,
+    `featured` tinyint(1) unsigned NOT NULL default 0,
+    `featured_start` datetime NULL,
+    `featured_end` datetime NULL,
+    PRIMARY KEY  (`id`),
+    KEY `STATUS` (`status`),
+    KEY `DATE` (`date_added`),
+    KEY `VIEWS` (`views_num`)
+) {mysql_version};
+            ]]>
+        </sql>
+    </install>
+
+    <uninstall>
+        <sql>
+            <![CDATA[
+DROP TABLE IF EXISTS `{prefix}video`;
+            ]]>
+        </sql>
+    </uninstall>
+</module>

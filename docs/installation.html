@@ -1,0 +1,30 @@
+<h3>Automatic remote installation</h3>
+<ul>
+    <li>Navigate to <i>Extensions / Plugins</i> in your Subrion admin dashboard</li>
+    <li>Switch to Available Plugins tab, choose Remote from Mode dropdown on the right</li>
+    <li>In the results list find this plugin and click Install icon to install it</li>
+</ul>
+
+<h3>Manual uploading</h3>
+<p>Sometimes your script does not have writable permissions. In this case you'd need to upload plugin folder to Subrion installation manually. Here are the steps to follow:</p>
+<ul>
+    <li>Download plugin from <a href="https://subrion.org/plugins/" target="_blank">plugins marketplace</a></li>
+    <li>Unpack the downloaded zip archive, get rid of version in folder name (Ex: "video_1.0.0" should be "video")</li>
+    <li>Upload plugin folder in your Subrion core <i>plugins/</i> folder using FTP client (Filezilla, etc.) or hosting file manager</li>
+    <li>Navigate to <i>Extensions / Plugins</i> in your Subrion admin dashboard</li>
+    <li>Switch to Available Plugins tab, find the plugin and click Install icon to install it</li>
+</ul>
+
+<h3>Git installation (for tech nerds)</h3>
+<p>Our free plugins can be also found at <a href="https://github.com/intelliants/" target="_blank">Subrion Github</a>. You can install any plugin, using basic Git commands.</p>
+<ul>
+    <li>Connect to your server using SSH</li>
+    <li>Change your directory (cd) to your Subrion core / <i>plugins/</i></li>
+    <li>Run this command: <i>git clone https://github.com/intelliants/subrion-plugin-NAME ./NAME</i> where name is the name of plugin you wish to install</li>
+    <li>Navigate to <i>Extensions / Plugins</i> in your Subrion admin dashboard</li>
+    <li>Switch to Available Plugins tab, find the plugin and click Install icon to install it</li>
+</ul>
+
+<p>Pay attention to the post-installation instructions. Plugins provide different functionality, so it would be good to check config section and content or extensions main menus in admin dashboard.
+    You're welcome to <a href="https://subrion.org/forums/" target="_blank">contact us</a> if you have any questions.
+</p>
