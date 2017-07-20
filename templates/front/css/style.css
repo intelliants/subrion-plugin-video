@@ -5,6 +5,7 @@
 .v-item-view__info{height:30px;line-height:30px;margin:30px 0}
 .v-item-view__info:after{display:block;content:'';clear:both}
 .v-item-view__info-item{margin-right:10px;color:rgba(0,0,0,.5)}
+.v-item-view__info-item .fa{margin-right:5px;}
 .v-item-view video{background-color:#000}
 
 @media (max-width: 991px) {
