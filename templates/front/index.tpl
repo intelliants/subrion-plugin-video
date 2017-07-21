@@ -59,7 +59,7 @@
             <div class="pull-left">
                 <span class="v-item-view__info-item">
                     <span class="fa fa-calendar"></span>
-                    {lang key='posted_on'} {$entry.date_added|date_format}</span>
+                    {lang key='posted_on'} {$entry.date_added|date_format:$core.config.date_format}</span>
                 </span>
                 <span class="v-item-view__info-item">
                     <span class="fa fa-eye"></span> {$entry.views_num} {lang key='views'}
