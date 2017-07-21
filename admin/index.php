@@ -32,7 +32,7 @@ class iaBackendController extends iaAbstractControllerModuleBackend
 
     protected $_helperName = 'video';
 
-    protected $_gridColumns = ['title', 'source', 'date_added', 'date_modified', 'status'];
+    protected $_gridColumns = ['title', 'source', 'date_added', 'date_modified', 'order', 'status'];
     protected $_gridFilters = ['status' => self::EQUAL];
 
     protected $_tooltipsEnabled = true;

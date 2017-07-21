@@ -82,6 +82,7 @@ CREATE TABLE `{prefix}video` (
     `date_modified` datetime,
     `status` enum('inactive', 'active') NOT NULL default 'active',
     `views_num` mediumint(7) unsigned NOT NULL,
+    `order` smallint(5) unsigned NOT NULL,
     `featured` tinyint(1) unsigned NOT NULL default 0,
     `featured_start` datetime NULL,
     `featured_end` datetime NULL,

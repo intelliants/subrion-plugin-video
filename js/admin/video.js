@@ -10,6 +10,7 @@ Ext.onReady(function () {
                     {name: 'source', title: _t('field_video_source'), width: 1, editor: 'text'},
                     {name: 'date_added', title: _t('date_added'), width: 170, editor: 'date'},
                     {name: 'date_modified', title: _t('date_modified'), width: 170, hidden: true},
+                    {name: 'order', title: _t('order'), width: 50, editor: 'text'},
                     'status',
                     'update',
                     'delete'

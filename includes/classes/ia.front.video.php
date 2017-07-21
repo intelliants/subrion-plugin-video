@@ -48,7 +48,7 @@ class iaVideo extends abstractModuleFront
             . 'FROM `' . self::getTable(true) . '`  v '
             . 'LEFT JOIN `:table_members` m ON (v.`member_id` = m.`id`)'
             . 'WHERE ' . ($where ? $where . ' AND' : '') . "  v.`status` = 'active' "
-            . 'ORDER BY v.`date_added` DESC '
+            . 'ORDER BY v.`order` '
             . ($start || $limit ? "LIMIT $start, $limit" : '');
 
         $sql = iaDb::printf($sql, [
