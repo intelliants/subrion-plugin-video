@@ -72,7 +72,7 @@ class iaVideo extends abstractModuleFront
         return $row;
     }
 
-    public function coreSearch($stmt, $start, $limit)
+    public function coreSearch($stmt, $start, $limit, $order)
     {
         $data = [];
 
