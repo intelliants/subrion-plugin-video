@@ -121,7 +121,9 @@ class iaVideo extends abstractModuleFront
                     $entry['url'], $matches)) {
                     $entry['video_id'] = $matches[5];
 
-                    $previewImages = array_shift(unserialize(file_get_contents("http://vimeo.com/api/v2/video/{$entry['video_id']}.php")));
+                    $data = unserialize(file_get_contents("http://vimeo.com/api/v2/video/{$entry['video_id']}.php"));
+                    $previewImages = array_shift($data);
+
                     $entry['vimeo_preview'] = $previewImages['thumbnail_large'];
                 }
 
