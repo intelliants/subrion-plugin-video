@@ -2,7 +2,7 @@
 /******************************************************************************
  *
  * Subrion - open source content management system
- * Copyright (C) 2017 Intelliants, LLC <https://intelliants.com>
+ * Copyright (C) 2018 Intelliants, LLC <https://intelliants.com>
  *
  * This file is part of Subrion.
  *
@@ -32,7 +32,7 @@ class iaBackendController extends iaAbstractControllerModuleBackend
 
     protected $_helperName = 'video';
 
-    protected $_gridColumns = ['title', 'source', 'date_added', 'date_modified', 'order', 'status'];
+    protected $_gridColumns = ['title', 'category_id', 'date_added', 'date_modified', 'order', 'status'];
     protected $_gridFilters = ['status' => self::EQUAL];
 
     protected $_tooltipsEnabled = true;
@@ -47,8 +47,7 @@ class iaBackendController extends iaAbstractControllerModuleBackend
 
     protected function _modifyGridParams(&$conditions, &$values, array $params)
     {
-        if (isset($params['source']))
-        {
+        if (isset($params['source'])) {
             $conditions[] = '`source` = :source ';
             $values['source'] = "{$params['source']}";
         }
@@ -64,10 +63,18 @@ class iaBackendController extends iaAbstractControllerModuleBackend
     protected function _setDefaultValues(array &$entry)
     {
         $entry = [
+            'category_id' => 0,
             'featured' => false,
             'status' => iaCore::STATUS_ACTIVE,
             'member_id' => iaUsers::getIdentity()->id,
         ];
+    }
+
+    protected function _setPageTitle(&$iaView, array $entryData, $action)
+    {
+        if (in_array($iaView->get('action'), array(iaCore::ACTION_ADD, iaCore::ACTION_EDIT))) {
+            $iaView->title(iaLanguage::get($iaView->get('action') . '_video'));
+        }
     }
 
     protected function _entryUpdate(array $entryData, $entryId)
@@ -85,23 +92,49 @@ class iaBackendController extends iaAbstractControllerModuleBackend
         return parent::_entryAdd($entryData);
     }
 
-    protected function _getJsonSource()
+    protected function _assignValues(&$iaView, array &$entryData)
     {
-        if ($rows = $this->_iaField->getField('source', 'video')) {
-            $values = explode(',', $rows['values']);
+        parent::_assignValues($iaView, $entryData);
 
-            if (!empty($values)) {
-                $data = [];
+        $categories = $this->_iaDb->keyvalue(['id', 'title_' . $this->_iaCore->language['iso']], null, 'video_category');
+        $iaView->assign('categories', $categories);
+    }
 
-                foreach ($values as $key => $value) {
-                    $data[$key]['value'] = $value;
-                    $data[$key]['title'] = iaLanguage::get('field_video_source+' . $value);
-                }
+    protected function _preSaveEntry(array &$entry, array $data, $action)
+    {
+        parent::_preSaveEntry($entry, $data, $action);
 
-                return ['data' => $data];
-            }
+        $entry['category_id'] = $data['category_id'];
+        if ($entry['category_id'] == 0) {
+            $this->addMessage(iaLanguage::getf('field_is_not_selected', ['field' => iaLanguage::get('category_id')]), false);
         }
 
-        return false;
+        return !$this->getMessages();
+    }
+
+    protected function _gridQuery($columns, $where, $order, $start, $limit)
+    {
+        $langCode = $this->_iaCore->language['iso'];
+
+        $sql = <<<SQL
+SELECT SQL_CALC_FOUND_ROWS v.`id`,  v.`title_$langCode` as `video_title`, v.`date_added`, v.`status` , v.`order` , c.`title_$langCode` as `category`, 1 `update`, 1 `delete`
+FROM `:prefixvideo` v
+LEFT JOIN `:prefixvideo_category` c ON (c.`id` = v.`category_id`) 
+:where 
+:order
+LIMIT :start, :limit
+SQL;
+
+        $sql = iaDb::printf($sql, [
+            'columns' => $columns,
+            'prefix' => $this->_iaDb->prefix,
+            'table_video' => self::getTable(),
+            'start' => $start,
+            'limit' => $limit,
+            'where' => $where ? 'WHERE ' . $where . ' ' : '',
+            'order' => $order,
+        ]);
+
+        return $this->_iaDb->getAll($sql);
     }
 }

@@ -4,29 +4,37 @@
     <summary>Allows to create video-section on the website</summary>
     <author>Intelliants LLC</author>
     <contributor>Intelliants LLC</contributor>
-    <version>2.0.0</version>
-    <date>2018-03-07</date>
+    <version>2.1.0</version>
+    <date>2018-03-13</date>
     <compatibility>4.2</compatibility>
 
     <items>
         <item payable="0" table_name="video">video</item>
+        <item payable="0" table_name="video_category">videocat</item>
     </items>
 
     <actions>
-        <action name="videos" url="video/" icon="list" pages="video:add,video:edit"><![CDATA[]]></action>
-        <action name="add_video" url="video/add/" icon="plus" pages="video:read,video:edit"><![CDATA[]]></action>
+        <action name="videos" url="video/" icon="list" pages="video:add,video:edit,videocat">Videos</action>
+        <action name="add_video" url="video/add/" icon="plus" pages="video:read,video:edit">Add Video</action>
+
+        <action name="video_categories" url="video/categories/" icon="list" pages="video">Categories</action>
+        <action name="video_category_add" url="video/categories/add/" icon="plus-alt" pages="videocat">Add Category</action>
+
     </actions>
 
     <adminpages>
-        <page group="content" name="video" url="video/" menus="menu">Video</page>
+        <page group="content" name="video" url="video/" menus="menu" filename="videos">Video</page>
+        <page group="content" name="videocat" url="video/categories/" filename="categories">Video Categories</page>
     </adminpages>
 
     <pages>
         <page menus="main,bottom" name="video" url="video/">Video</page>
+        <page menus="main,bottom" name="videocat" url="video/categories">Category</page>
     </pages>
 
     <fields_groups>
         <group item="video" name="general" title="General"><![CDATA[]]></group>
+        <group item="video_category" name="categ" title="General"><![CDATA[]]></group>
     </fields_groups>
 
     <fields>
@@ -37,14 +45,16 @@
         <field name="file_mp4" item="video" type="storage" group="general" length="1" required="1" relation="dependent" parent="source:custom_upload" adminonly="1" file_types="mp4">MP4</field>
         <field name="file_webm" item="video" type="storage" group="general" length="1" relation="dependent" parent="source:custom_upload" adminonly="1" file_types="webm">WebM</field>
         <field name="file_ogg" item="video" type="storage" group="general" length="1" relation="dependent" parent="source:custom_upload" adminonly="1" file_types="ogg">Ogg</field>
+
+        <field name="title" item="videocat" type="text" group="general" length="70" required="1"  multilingual="1">Title</field>
     </fields>
 
     <phrases>
         <phrase category="admin" key="dashboard_video_add">Add Video</phrase>
-
         <phrase category="admin" key="add_video">Add Video</phrase>
         <phrase category="admin" key="edit_video">Edit Video</phrase>
         <phrase category="admin" key="video_added">Entry added.</phrase>
+        <phrase category="admin" key="category_id">Category</phrase>
 
         <phrase category="common" key="video">Video</phrase>
 
@@ -78,6 +88,7 @@
 CREATE TABLE `{prefix}video` (
     `id` mediumint(7) unsigned NOT NULL auto_increment,
     `member_id` int(11) unsigned NOT NULL,
+    `category_id` smallint(5) unsigned NOT NULL,
     `date_added` datetime,
     `date_modified` datetime,
     `status` enum('inactive', 'active') NOT NULL default 'active',
@@ -93,12 +104,25 @@ CREATE TABLE `{prefix}video` (
 ) {mysql_version};
             ]]>
         </sql>
+
+        <sql>
+            <![CDATA[
+CREATE TABLE `{prefix}video_category` (
+    `id` mediumint(7) unsigned NOT NULL auto_increment,
+    `slug` varchar(100) NOT NULL,
+     `date_added` datetime,
+    `date_modified` datetime,
+    `status` enum('inactive', 'active') NOT NULL default 'active',
+    PRIMARY KEY  (`id`)
+) {mysql_version};
+            ]]>
+        </sql>
     </install>
 
     <uninstall>
         <sql>
             <![CDATA[
-DROP TABLE IF EXISTS `{prefix}video`;
+DROP TABLE IF EXISTS `{prefix}video`, `{prefix}video_category`;
             ]]>
         </sql>
     </uninstall>
