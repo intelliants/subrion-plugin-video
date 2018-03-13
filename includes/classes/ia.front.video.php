@@ -1,5 +1,4 @@
 <?php
-
 /******************************************************************************
  *
  * Subrion - open source content management system
@@ -24,6 +23,7 @@
  * @link https://subrion.org/
  *
  ******************************************************************************/
+
 class iaVideo extends abstractModuleFront
 {
     protected static $_table = 'video';
@@ -54,6 +54,8 @@ class iaVideo extends abstractModuleFront
         $sql = iaDb::printf($sql, [
             'table_members' => iaUsers::getTable(true),
         ]);
+
+
 
         $rows = $this->iaDb->getAll($sql);
 
@@ -91,19 +93,6 @@ class iaVideo extends abstractModuleFront
         return $this->_foundRows;
     }
 
-    protected function _processValues(&$rows, $singleRow = false, $fieldNames = [])
-    {
-        parent::_processValues($rows, $singleRow, $fieldNames);
-
-        if ($singleRow) {
-            $rows = $this->_getVideoInfo($rows);
-        } else {
-            foreach ($rows as &$row) {
-                $row = $this->_getVideoInfo($row);
-            }
-        }
-    }
-
     protected function _getVideoInfo(array $entry)
     {
         switch ($entry['source']) {
@@ -134,5 +123,56 @@ class iaVideo extends abstractModuleFront
         }
 
         return $entry;
+    }
+
+    public function getCategories()
+    {
+        $sql = 'SELECT SQL_CALC_FOUND_ROWS *'
+            . 'FROM `:prefix:video_category`';
+
+        $sql = iaDb::printf($sql, [
+            'prefix' => $this->iaDb->prefix,
+            'video_category' => 'video_category'
+        ]);
+
+        $rows = $this->iaDb->getAll($sql);
+
+        $this->_foundRows = $this->iaDb->foundRows();
+        $this->_processValues($rows);
+
+        return $rows;
+    }
+
+
+    public function getCategoryBySlug($slug)
+    {
+        $where = 'slug = :slug && status = :status';
+        $this->iaDb->bind($where, ['slug' => $slug, 'status' => iaCore::STATUS_ACTIVE]);
+
+        $rows = $this->iaDb->row(iaDb::ALL_COLUMNS_SELECTION, $where, 'video_category');
+        $this->_processValues($rows,true);
+
+        return $rows;
+    }
+
+    public function getCategoryById($id)
+    {
+        $where = 'id = :id && status = :status';
+        $this->iaDb->bind($where, ['id' => $id, 'status' => iaCore::STATUS_ACTIVE]);
+
+        $rows = $this->iaDb->row(iaDb::ALL_COLUMNS_SELECTION, $where, 'video_category');
+        $this->_processValues($rows,true);
+
+        return $rows;
+    }
+
+    public function getByCategoryId($id, $start, $limit)
+    {
+        $rows = $this->iaDb->all('SQL_CALC_FOUND_ROWS *', iaDb::convertIds($id, 'category_id') . ' ORDER BY `order` ASC', $start, $limit, self::getTable());
+
+        $this->_foundRows = $this->iaDb->foundRows();
+        $this->_processValues($rows);
+
+        return $rows;
     }
 }

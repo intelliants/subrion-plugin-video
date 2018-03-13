@@ -6,11 +6,11 @@ Ext.onReady(function () {
             {
                 columns: [
                     'selection',
-                    {name: 'video_title', title: _t('title'), width: 1, editor: 'text'},
-                    {name: 'date_added', title: _t('date_added'), width: 1, editor: 'date'},
-                    {name: 'date_modified', title: _t('date_modified'), width: 1, hidden: true},
-                    {name: 'order', title: _t('order'), width:1, editor: 'text'},
-                    {name: 'category', title: _t('category'), width: 1, editor: 'text'},
+                    {name: 'title', title: _t('title'), width: 1, editor: 'text'},
+
+                    {name: 'date_added', title: _t('date_added'), width: 170, editor: 'date'},
+                    {name: 'date_modified', title: _t('date_modified'), width: 170, hidden: true},
+
                     'status',
                     'update',
                     'delete'
@@ -23,22 +23,11 @@ Ext.onReady(function () {
             items: [
                 {
                     emptyText: _t('text'),
-                    name: 'video_title',
+                    name: 'text',
                     listeners: intelli.gridHelper.listener.specialKey,
                     xtype: 'textfield'
                 },
-
                 {
-                    displayField: 'title',
-                    editable: false,
-                    emptyText: _t('category'),
-                    id: 'fltStatus',
-                    name: 'category',
-                    store: intelli.video.stores.statuses,
-                    typeAhead: true,
-                    valueField: 'value',
-                    xtype: 'textfield'
-                },{
                     displayField: 'title',
                     editable: false,
                     emptyText: _t('status'),
@@ -48,8 +37,7 @@ Ext.onReady(function () {
                     typeAhead: true,
                     valueField: 'value',
                     xtype: 'combo'
-                },
-                {
+                }, {
                     handler: function () {
                         intelli.gridHelper.search(intelli.video);
                     },

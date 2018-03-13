@@ -13,7 +13,7 @@
         {$preview = "{$smarty.const.IA_CLEAR_URL}modules/video/templates/front/img/preview.png"}
     {/if}
 
-    <a href="{$smarty.const.IA_URL}video/{$entry.id}/" class="v-item__preview" style="background-image: url({$preview});"></a>
+    <a href="{$smarty.const.IA_URL}video/{$category.slug}/{$entry.id}/" class="v-item__preview" style="background-image: url({$preview});"></a>
 
     <div class="v-item__content">
         <h4 class="v-item__title">{$entry.title|escape|truncate:50:'...'}</h4>
