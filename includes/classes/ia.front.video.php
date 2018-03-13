@@ -44,18 +44,21 @@ class iaVideo extends abstractModuleFront
 
     public function get($where, $start = null, $limit = null)
     {
-        $sql = 'SELECT SQL_CALC_FOUND_ROWS v.*, m.`fullname` '
+        $langCode = $this->iaCore->language['iso'];
+
+        $sql = 'SELECT SQL_CALC_FOUND_ROWS v.*,c.`title_'.$langCode.'` as category_title, c.`slug` ,  m.`fullname` '
             . 'FROM `' . self::getTable(true) . '`  v '
             . 'LEFT JOIN `:table_members` m ON (v.`member_id` = m.`id`)'
+            . 'LEFT JOIN `:prefix:video_category` c ON (v.`category_id` = c.`id`)'
             . 'WHERE ' . ($where ? $where . ' AND' : '') . "  v.`status` = 'active' "
-            . 'ORDER BY v.`order` '
+            . 'ORDER BY v.`id` DESC '
             . ($start || $limit ? "LIMIT $start, $limit" : '');
 
         $sql = iaDb::printf($sql, [
+            'prefix' => $this->iaDb->prefix,
             'table_members' => iaUsers::getTable(true),
+            'video_category' => 'video_category',
         ]);
-
-
 
         $rows = $this->iaDb->getAll($sql);
 
