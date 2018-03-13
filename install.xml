@@ -4,12 +4,12 @@
     <summary>Allows to create video-section on the website</summary>
     <author>Intelliants LLC</author>
     <contributor>Intelliants LLC</contributor>
-    <version>1.1.0</version>
-    <date>2017-07-20</date>
-    <compatibility>4.1</compatibility>
+    <version>2.0.0</version>
+    <date>2018-03-07</date>
+    <compatibility>4.2</compatibility>
 
     <items>
-        <item payable="0">video</item>
+        <item payable="0" table_name="video">video</item>
     </items>
 
     <actions>
@@ -64,11 +64,11 @@
     <config group="video" name="video_autoplay" type="radio" values="1,0" description="Autoplay videos">0</config>
 
     <blocks>
-        <block title="Latest Videos" name="latest_videos" collapsible="1" position="left" type="smarty" classname="" filename="block.latest_videos"><![CDATA[]]></block>
+        <block title="Latest Videos" name="latest_videos" collapsible="1" position="left" type="smarty" classname="" filename="block.latest_videos.tpl"><![CDATA[]]></block>
     </blocks>
 
     <hooks>
-        <hook name="phpCoreBeforePageDisplay" page_type="front" filename="hook.blocks-load"><![CDATA[]]></hook>
+        <hook name="phpCoreBeforePageDisplay" page_type="front" filename="hook.blocks-load.php"><![CDATA[]]></hook>
         <hook name="adminDashboardStatistics" page_type="admin"><![CDATA[$items['video'] = 'plugin';]]></hook>
     </hooks>
 

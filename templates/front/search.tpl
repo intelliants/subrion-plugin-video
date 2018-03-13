@@ -3,7 +3,7 @@
         <div class="row">
             {foreach $entries as $entry}
                 <div class="col-md-4">
-                    {include file='extra:video/list-videos'}
+                    {include file='module:video/list-videos.tpl'}
                 </div>
 
                 {if $entry@iteration % 3 == 0 && !$entry@last}
