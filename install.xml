@@ -29,7 +29,6 @@
 
     <pages>
         <page menus="main,bottom" name="video" url="video/">Video</page>
-        <page menus="main,bottom" name="videocat" url="video/categories">Category</page>
     </pages>
 
     <fields_groups>

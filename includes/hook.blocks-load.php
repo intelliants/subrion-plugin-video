@@ -29,6 +29,7 @@ if (iaView::REQUEST_HTML == $iaView->getRequestType()) {
 
     if ($iaView->blockExists('latest_videos')) {
         $video = $iaVideo->get(iaDb::EMPTY_CONDITION, 0, $iaCore->get('video_number_block'));
+
         $iaView->assign('video_latest', $video);
     }
 }
