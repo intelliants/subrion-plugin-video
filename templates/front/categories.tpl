@@ -6,4 +6,7 @@
             {/foreach}
         </div>
     </div>
+
+{else}
+    <div class="alert alert-info">{lang key='no_videos'}</div>
 {/if}

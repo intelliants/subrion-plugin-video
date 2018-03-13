@@ -58,6 +58,7 @@
         <phrase category="common" key="video">Video</phrase>
 
         <phrase category="frontend" key="no_videos">Administrator has not posted any videos.</phrase>
+        <phrase category="frontend" key="no_videos_in_category">Administrator has not posted any videos in this Category.</phrase>
         <phrase category="frontend" key="posted">Posted</phrase>
         <phrase category="frontend" key="view_all_videos">View all videos</phrase>
     </phrases>

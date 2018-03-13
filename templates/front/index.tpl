@@ -17,5 +17,5 @@
     {navigation aTotal=$pagination.total aTemplate=$pagination.url aItemsPerPage=$pagination.limit aNumPageItems=5}
 
 {else}
-    <div class="alert alert-info">{lang key='no_videos'}</div>
+    <div class="alert alert-info">{lang key='no_videos_in_category'}</div>
 {/if}
